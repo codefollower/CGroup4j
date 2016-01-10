@@ -39,10 +39,10 @@ public class MemoryTest extends SubSystemTest {
         long actual = memory.getPhysicalUsageLimit();
         assertEquals(excepted, actual);
 
-        //        excepted = 2 * 1024;
-        //        memory.setWithSwapUsageLimit(excepted);
-        //        actual = memory.getWithSwapUsageLimit();
-        //        assertEquals(excepted, actual);
+        // excepted = 2 * 1024;
+        // memory.setWithSwapUsageLimit(excepted);
+        // actual = memory.getWithSwapUsageLimit();
+        // assertEquals(excepted, actual);
 
         excepted = 60;
         memory.setSwappiness((int) excepted);

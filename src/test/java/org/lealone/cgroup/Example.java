@@ -44,10 +44,12 @@ public class Example {
     }
 
     private static void run() throws IOException {
-        g1.getCpuset().setCpus(new int[] { 0 });
-        g2.getCpuset().setCpus(new int[] { 0 });
-        g1.getCpuset().setMems(new int[] { 0 });
-        g2.getCpuset().setMems(new int[] { 0 });
+        g1.getCpuset().setCpus(0);
+        g2.getCpuset().setCpus(0);
+
+        g1.getCpuset().setMems(0);
+        g2.getCpuset().setMems(0);
+
         g1.getCpu().setShares(512);
         g2.getCpu().setShares(2048);
 

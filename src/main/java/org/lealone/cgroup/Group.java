@@ -253,11 +253,11 @@ public class Group {
 
     private static String readPassword() throws IOException {
         Console console = System.console();
-        if (console == null) { //In Eclipse
+        if (console == null) { // In Eclipse
             System.out.print("Password: ");
             BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
             return stdin.readLine();
-        } else { //Outside Eclipse
+        } else { // Outside Eclipse
             char[] pwd = console.readPassword("Password: ");
             return new String(pwd);
         }
@@ -304,7 +304,6 @@ public class Group {
                     throw new IOException(errorOutput);
                 }
                 String output = toString(process.getInputStream());
-                //LOG.info("Shell Output: " + output);
                 return output;
             } catch (InterruptedException ie) {
                 throw new IOException(ie.toString());
@@ -319,9 +318,8 @@ public class Group {
         }
 
         public void mount(String name, int subSystems) throws IOException {
-            String path = String.format(CGROUP_DIR_PREFIX, name);
-
             if (subSystems > 0) {
+                String path = String.format(CGROUP_DIR_PREFIX, name);
                 String flag = SubSystemType.getTypeNames(subSystems);
                 String cmd = String.format(SHELL_MOUNT, flag, name, path);
                 exec(cmd, true);

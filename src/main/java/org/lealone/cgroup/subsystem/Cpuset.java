@@ -46,7 +46,7 @@ public class Cpuset extends SubSystem {
         return SubSystemType.cpuset;
     }
 
-    public void setCpus(int[] nums) throws IOException {
+    public void setCpus(int... nums) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (int num : nums) {
             sb.append(num);
@@ -61,7 +61,7 @@ public class Cpuset extends SubSystem {
         return parseNums(output);
     }
 
-    public void setMems(int[] nums) throws IOException {
+    public void setMems(int... nums) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (int num : nums) {
             sb.append(num);

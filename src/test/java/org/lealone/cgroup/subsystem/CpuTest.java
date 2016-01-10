@@ -57,7 +57,7 @@ public class CpuTest extends SubSystemTest {
         assertEquals(0, stat.nrThrottled);
         assertEquals(0, stat.throttledTime);
 
-        //cpu.addTask(Threads.getThreadId());
+        // cpu.addTask(Threads.getThreadId());
     }
 
 }
