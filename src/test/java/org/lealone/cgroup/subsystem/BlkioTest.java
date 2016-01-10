@@ -61,12 +61,6 @@ public class BlkioTest extends SubSystemTest {
     }
 
     @Test
-    public void testGetIoQueueCountThrottle() {
-        Blkio.Record[] records = root.getBlkio().getIoQueueCountThrottle();
-        assertTrue(records.length > 0);
-    }
-
-    @Test
     public void testGetIoServiceCountThrottle() {
         Blkio.Record[] records = root.getBlkio().getIoServiceCountThrottle();
         assertTrue(records.length > 0);

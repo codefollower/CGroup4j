@@ -19,30 +19,37 @@ package org.lealone.cgroup.subsystem;
 
 import org.lealone.cgroup.Group;
 
+// https://www.kernel.org/doc/Documentation/cgroups/blkio-controller.txt
 public class Blkio extends SubSystem {
 
-    private static final String BLKIO_THROTTLE_READ_BPS_DEVICE = "blkio.throttle.read_bps_device";
-    private static final String BLKIO_THROTTLE_WRITE_BPS_DEVICE = "blkio.throttle.write_bps_device";
-    private static final String BLKIO_THROTTLE_READ_IOPS_DEVICE = "blkio.throttle.read_iops_device";
-    private static final String BLKIO_THROTTLE_WRITE_IOPS_DEVICE = "blkio.throttle.write_iops_device";
-    private static final String BLKIO_THROTTLE_IO_SERIVICED = "blkio.throttle.io_serviced";
+    // 总共22个
     private static final String BLKIO_THROTTLE_IO_SERIVICE_BYTES = "blkio.throttle.io_service_bytes";
-    private static final String BLKIO_THROTTLE_IO_QUEUED = "blkio.throttle.io_queued";
+    private static final String BLKIO_THROTTLE_IO_SERIVICED = "blkio.throttle.io_serviced";
+    private static final String BLKIO_THROTTLE_READ_BPS_DEVICE = "blkio.throttle.read_bps_device";
+    private static final String BLKIO_THROTTLE_READ_IOPS_DEVICE = "blkio.throttle.read_iops_device";
+    private static final String BLKIO_THROTTLE_WRITE_BPS_DEVICE = "blkio.throttle.write_bps_device";
+    private static final String BLKIO_THROTTLE_WRITE_IOPS_DEVICE = "blkio.throttle.write_iops_device";
 
-    private static final String BLKIO_RESET_STATS = "blkio.reset_stats";
+    private static final String BLKIO_WEIGHT = "blkio.weight";
+    private static final String BLKIO_WEIGHT_DEVICE = "blkio.weight_device";
+
+    private static final String BLKIO_IO_MERGED = "blkio.io_merged";
+    private static final String BLKIO_IO_QUEUED = "blkio.io_queued";
+    private static final String BLKIO_IO_SERIVICE_BYTES = "blkio.io_service_bytes";
+    private static final String BLKIO_IO_SERIVICED = "blkio.io_serviced";
+    private static final String BLKIO_IO_SERIVICE_TIME = "blkio.io_service_time";
+    private static final String BLKIO_IO_WAIT_TIME = "blkio.io_wait_time";
+
     private static final String BLKIO_TIME = "blkio.time";
+    private static final String BLKIO_RESET_STATS = "blkio.reset_stats";
     private static final String BLKIO_SECTORS = "blkio.sectors";
+
+    // 下面5个设置CONFIG_DEBUG_BLK_CGROUP=y时才能见到
     private static final String BLKIO_AVG_QUEUE_SIZE = "blkio.avg_queue_size";
     private static final String BLKIO_GROUP_WAIT_TIME = "blkio.group_wait_time";
     private static final String BLKIO_EMPTY_TIME = "blkio.empty_time";
     private static final String BLKIO_IDLE_TIME = "blkio.idle_time";
     private static final String BLKIO_DEQUEUE = "blkio.dequeue";
-    private static final String BLKIO_IO_SERIVICED = "blkio.io_serviced";
-    private static final String BLKIO_IO_SERIVICE_BYTES = "blkio.io_service_bytes";
-    private static final String BLKIO_IO_SERIVICE_TIME = "blkio.io_service_time";
-    private static final String BLKIO_IO_WAIT_TIME = "blkio.io_wait_time";
-    private static final String BLKIO_IO_MERGED = "blkio.io_merged";
-    private static final String BLKIO_IO_QUEUED = "blkio.io_queued";
 
     public Blkio(Group group) {
         super(group);
@@ -151,16 +158,30 @@ public class Blkio extends SubSystem {
         return getThrottle(BLKIO_THROTTLE_WRITE_IOPS_DEVICE);
     }
 
-    public Record[] getIoQueueCountThrottle() {
-        return getThrottle(BLKIO_THROTTLE_IO_QUEUED);
-    }
-
     public Record[] getIoServiceCountThrottle() {
         return getThrottle(BLKIO_THROTTLE_IO_SERIVICED);
     }
 
     public Record[] getIoServiceBytesThrottle() {
         return getThrottle(BLKIO_THROTTLE_IO_SERIVICE_BYTES);
+    }
+
+    public void setWeight(int v) {
+        setParameter(BLKIO_WEIGHT, v);
+    }
+
+    public int getWeight() {
+        return getIntParameter(BLKIO_WEIGHT);
+    }
+
+    public void setWeightDevice(int major, int minor, int weight) {
+        StringBuilder s = new StringBuilder();
+        s.append(major).append(':').append(minor).append(' ').append(weight);
+        setParameter(BLKIO_WEIGHT_DEVICE, s);
+    }
+
+    public String getWeightDevice() {
+        return getStringParameter(BLKIO_WEIGHT_DEVICE);
     }
 
     public void resetStats(int v) {
