@@ -2,7 +2,7 @@
 
 [Linux CGroups](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt) For Java
 
-## Subsystems
+## SubSystems
 
 ☑ blkio<br/>
 ☑ cpu<br/>
@@ -20,7 +20,7 @@
 
 ## Requirements
 
-* linux kernel 2.6.18+
+* Linux kernel 2.6.18+
 * Java 1.7+
 
 ## License
