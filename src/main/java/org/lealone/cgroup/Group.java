@@ -62,7 +62,7 @@ public class Group {
 
     private volatile boolean umounted;
 
-    protected Group(Group parent, String name, Shell shell, int subSystems) throws IOException {
+    protected Group(Group parent, String name, Shell shell, int subSystems) {
         this.parent = parent;
         this.name = name;
         this.shell = shell;
@@ -73,7 +73,7 @@ public class Group {
         }
     }
 
-    public Group createSubGroup(String name, SubSystemType... subSystemTypes) throws IOException {
+    public Group createSubGroup(String name, SubSystemType... subSystemTypes) {
         int subSystems = 0;
         for (SubSystemType type : subSystemTypes)
             subSystems |= type.value;
@@ -82,7 +82,7 @@ public class Group {
         return new Group(this, name, shell, subSystems);
     }
 
-    public void umount() throws IOException {
+    public void umount() {
         Group[] subGroups = new Group[this.subGroups.size()];
         this.subGroups.toArray(subGroups);
 
@@ -212,11 +212,11 @@ public class Group {
         }
     }
 
-    public void setParameter(String parameterName, Object parameterValue) throws IOException {
+    public void setParameter(String parameterName, Object parameterValue) {
         shell.set(getFullName(), parameterName, parameterValue.toString());
     }
 
-    public String getParameter(String parameterName) throws IOException {
+    public String getParameter(String parameterName) {
         return shell.get(getFullName(), parameterName);
     }
 
@@ -224,7 +224,7 @@ public class Group {
     private static final String PASSWORD = "password";
     private static final String SUDO = "sudo";
 
-    public static Group createRootGroup(String name, SubSystemType... subSystemTypes) throws IOException {
+    public static Group createRootGroup(String name, SubSystemType... subSystemTypes) {
         boolean sudo = false;
         String password = null;
         try {
@@ -251,12 +251,16 @@ public class Group {
         return new Group(null, name, shell, subSystems);
     }
 
-    private static String readPassword() throws IOException {
+    private static String readPassword() {
         Console console = System.console();
         if (console == null) { // In Eclipse
             System.out.print("Password: ");
             BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-            return stdin.readLine();
+            try {
+                return stdin.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to read password", e);
+            }
         } else { // Outside Eclipse
             char[] pwd = console.readPassword("Password: ");
             return new String(pwd);
@@ -286,17 +290,18 @@ public class Group {
                 cmdPrefix = "";
         }
 
-        public String exec(String cmd) throws IOException {
+        public String exec(String cmd) {
             return exec(cmd, false);
         }
 
-        public String exec(String cmd, boolean isPrivilege) throws IOException {
+        public String exec(String cmd, boolean isPrivilege) {
             if (isPrivilege) {
                 cmd = cmdPrefix + cmd;
             }
             LOG.info("Shell cmd: " + cmd);
-            Process process = Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", cmd });
             try {
+                Process process = Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", cmd });
+
                 process.waitFor();
                 if (process.exitValue() != 0) {
                     String errorOutput = toString(process.getErrorStream());
@@ -305,8 +310,8 @@ public class Group {
                 }
                 String output = toString(process.getInputStream());
                 return output;
-            } catch (InterruptedException ie) {
-                throw new IOException(ie.toString());
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to exec cmd: " + cmd, e);
             }
         }
 
@@ -317,7 +322,7 @@ public class Group {
 
         }
 
-        public void mount(String name, int subSystems) throws IOException {
+        public void mount(String name, int subSystems) {
             if (subSystems > 0) {
                 String path = String.format(CGROUP_DIR_PREFIX, name);
                 String flag = SubSystemType.getTypeNames(subSystems);
@@ -326,30 +331,30 @@ public class Group {
             }
         }
 
-        public void umount(String name) throws IOException {
+        public void umount(String name) {
             String path = String.format(CGROUP_DIR_PREFIX, name);
             String cmd = String.format(SHELL_UMOUNT, path);
             exec(cmd, true);
         }
 
-        public void mkdir(String path) throws IOException {
+        public void mkdir(String path) {
             path = String.format(CGROUP_DIR_PREFIX, path);
             String cmd = String.format(SHELL_MKDIR, path);
             exec(cmd, true);
         }
 
-        public void rmdir(String path) throws IOException {
+        public void rmdir(String path) {
             path = String.format(CGROUP_DIR_PREFIX, path);
             String cmd = String.format(SHELL_RMDIR, path);
             exec(cmd, true);
         }
 
-        public void set(String group, String p, String value) throws IOException {
+        public void set(String group, String p, String value) {
             String cmd = String.format(SHELL_ECHO, value, group, p);
             exec(cmd, true);
         }
 
-        public String get(String group, String p) throws IOException {
+        public String get(String group, String p) {
             String cmd = String.format(SHELL_CAT, group, p);
             String result = exec(cmd);
             result = result.trim();

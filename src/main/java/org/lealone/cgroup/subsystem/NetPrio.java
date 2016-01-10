@@ -17,7 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,11 +36,11 @@ public class NetPrio extends SubSystem {
         return SubSystemType.net_prio;
     }
 
-    public int getPrioId() throws IOException {
+    public int getPrioId() {
         return getIntParameter(NET_PRIO_PRIOIDX);
     }
 
-    public Map<String, Integer> getIfPrioMap() throws IOException {
+    public Map<String, Integer> getIfPrioMap() {
         String output = getStringParameter(NET_PRIO_IFPRIOMAP);
         String[] splits = output.split("\n");
         Map<String, Integer> ifPrioMap = new HashMap<String, Integer>();
@@ -52,7 +51,7 @@ public class NetPrio extends SubSystem {
         return ifPrioMap;
     }
 
-    public void addIfPrioMap(String iface, int priority) throws IOException {
+    public void addIfPrioMap(String iface, int priority) {
         StringBuilder sb = new StringBuilder();
         sb.append(iface);
         sb.append(' ');

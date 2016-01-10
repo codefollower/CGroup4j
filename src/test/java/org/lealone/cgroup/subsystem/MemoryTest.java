@@ -20,8 +20,6 @@ package org.lealone.cgroup.subsystem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 public class MemoryTest extends SubSystemTest {
@@ -31,7 +29,7 @@ public class MemoryTest extends SubSystemTest {
     }
 
     @Test
-    public void run() throws IOException {
+    public void run() {
         Memory memory = g1.getMemory();
 
         long excepted = 200704l;

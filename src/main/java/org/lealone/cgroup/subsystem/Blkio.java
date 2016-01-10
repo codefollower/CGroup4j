@@ -17,8 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
-
 import org.lealone.cgroup.Group;
 
 public class Blkio extends SubSystem {
@@ -55,12 +53,12 @@ public class Blkio extends SubSystem {
         return SubSystemType.blkio;
     }
 
-    private void setThrottle(String prop, int major, int minor, int speed) throws IOException {
+    private void setThrottle(String prop, int major, int minor, int speed) {
         Record record = new Record(major, minor, null, speed);
         setParameter(prop, record);
     }
 
-    private Record[] getThrottle(String prop) throws IOException {
+    private Record[] getThrottle(String prop) {
         return parseRecordList(prop);
     }
 
@@ -121,108 +119,108 @@ public class Blkio extends SubSystem {
         }
     }
 
-    public void setReadBpsThrottle(int major, int minor, int speed) throws IOException {
+    public void setReadBpsThrottle(int major, int minor, int speed) {
         setThrottle(BLKIO_THROTTLE_READ_BPS_DEVICE, major, minor, speed);
     }
 
-    public Record[] getReadBpsThrottle() throws IOException {
+    public Record[] getReadBpsThrottle() {
         return getThrottle(BLKIO_THROTTLE_READ_BPS_DEVICE);
     }
 
-    public void setWriteBpsThrottle(int major, int minor, int speed) throws IOException {
+    public void setWriteBpsThrottle(int major, int minor, int speed) {
         setThrottle(BLKIO_THROTTLE_WRITE_BPS_DEVICE, major, minor, speed);
     }
 
-    public Record[] getWriteBpsThrottle() throws IOException {
+    public Record[] getWriteBpsThrottle() {
         return getThrottle(BLKIO_THROTTLE_WRITE_BPS_DEVICE);
     }
 
-    public void setReadIopsThrottle(int major, int minor, int speed) throws IOException {
+    public void setReadIopsThrottle(int major, int minor, int speed) {
         setThrottle(BLKIO_THROTTLE_READ_IOPS_DEVICE, major, minor, speed);
     }
 
-    public Record[] getReadIopsThrottle() throws IOException {
+    public Record[] getReadIopsThrottle() {
         return getThrottle(BLKIO_THROTTLE_READ_IOPS_DEVICE);
     }
 
-    public void setWriteIopsThrottle(int major, int minor, int speed) throws IOException {
+    public void setWriteIopsThrottle(int major, int minor, int speed) {
         setThrottle(BLKIO_THROTTLE_WRITE_IOPS_DEVICE, major, minor, speed);
     }
 
-    public Record[] getWriteIopsThrottle() throws IOException {
+    public Record[] getWriteIopsThrottle() {
         return getThrottle(BLKIO_THROTTLE_WRITE_IOPS_DEVICE);
     }
 
-    public Record[] getIoQueueCountThrottle() throws IOException {
+    public Record[] getIoQueueCountThrottle() {
         return getThrottle(BLKIO_THROTTLE_IO_QUEUED);
     }
 
-    public Record[] getIoServiceCountThrottle() throws IOException {
+    public Record[] getIoServiceCountThrottle() {
         return getThrottle(BLKIO_THROTTLE_IO_SERIVICED);
     }
 
-    public Record[] getIoServiceBytesThrottle() throws IOException {
+    public Record[] getIoServiceBytesThrottle() {
         return getThrottle(BLKIO_THROTTLE_IO_SERIVICE_BYTES);
     }
 
-    public void resetStats(int v) throws IOException {
+    public void resetStats(int v) {
         setParameter(BLKIO_RESET_STATS, v);
     }
 
-    public Record[] getIoTime() throws IOException {
+    public Record[] getIoTime() {
         return parseRecordList(BLKIO_TIME);
     }
 
-    public Record[] getSectors() throws IOException {
+    public Record[] getSectors() {
         return parseRecordList(BLKIO_SECTORS);
     }
 
-    public int getAvgQueueSize() throws IOException {
+    public int getAvgQueueSize() {
         return getIntParameter(BLKIO_AVG_QUEUE_SIZE);
     }
 
-    public long getGroupWaitTime() throws IOException {
+    public long getGroupWaitTime() {
         return getLongParameter(BLKIO_GROUP_WAIT_TIME);
     }
 
-    public long getEmptyTime() throws IOException {
+    public long getEmptyTime() {
         return getLongParameter(BLKIO_EMPTY_TIME);
     }
 
-    public long getIdleTime() throws IOException {
+    public long getIdleTime() {
         return getLongParameter(BLKIO_IDLE_TIME);
     }
 
-    public Record getDequeueCount() throws IOException {
+    public Record getDequeueCount() {
         String output = getStringParameter(BLKIO_DEQUEUE);
         return new Record(output);
     }
 
-    public Record[] getIoServiceCount() throws IOException {
+    public Record[] getIoServiceCount() {
         return parseRecordList(BLKIO_IO_SERIVICED);
     }
 
-    public Record[] getIoServiceBytes() throws IOException {
+    public Record[] getIoServiceBytes() {
         return parseRecordList(BLKIO_IO_SERIVICE_BYTES);
     }
 
-    public Record[] getIoServiceTime() throws IOException {
+    public Record[] getIoServiceTime() {
         return parseRecordList(BLKIO_IO_SERIVICE_TIME);
     }
 
-    public Record[] getIoWaitTime() throws IOException {
+    public Record[] getIoWaitTime() {
         return parseRecordList(BLKIO_IO_WAIT_TIME);
     }
 
-    public Record[] getIoMergeCount() throws IOException {
+    public Record[] getIoMergeCount() {
         return parseRecordList(BLKIO_IO_MERGED);
     }
 
-    public Record[] getIoQueueCount() throws IOException {
+    public Record[] getIoQueueCount() {
         return parseRecordList(BLKIO_IO_QUEUED);
     }
 
-    private Record[] parseRecordList(String p) throws IOException {
+    private Record[] parseRecordList(String p) {
         String output = getStringParameter(p);
         return Record.parseRecordList(output);
     }

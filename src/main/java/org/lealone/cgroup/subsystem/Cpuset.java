@@ -17,7 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import org.lealone.cgroup.Group;
@@ -46,7 +45,7 @@ public class Cpuset extends SubSystem {
         return SubSystemType.cpuset;
     }
 
-    public void setCpus(int... nums) throws IOException {
+    public void setCpus(int... nums) {
         StringBuilder sb = new StringBuilder();
         for (int num : nums) {
             sb.append(num);
@@ -56,12 +55,12 @@ public class Cpuset extends SubSystem {
         setParameter(CPUSET_CPUS, sb);
     }
 
-    public int[] getCpus() throws IOException {
+    public int[] getCpus() {
         String output = getStringParameter(CPUSET_CPUS);
         return parseNums(output);
     }
 
-    public void setMems(int... nums) throws IOException {
+    public void setMems(int... nums) {
         StringBuilder sb = new StringBuilder();
         for (int num : nums) {
             sb.append(num);
@@ -71,92 +70,92 @@ public class Cpuset extends SubSystem {
         setParameter(CPUSET_MEMS, sb);
     }
 
-    public int[] getMems() throws IOException {
+    public int[] getMems() {
         String output = getStringParameter(CPUSET_MEMS);
         return parseNums(output);
     }
 
-    public void setMemMigrate(boolean flag) throws IOException {
+    public void setMemMigrate(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(CPUSET_MEMORY_MIGRATE, v);
     }
 
-    public boolean isMemMigrate() throws IOException {
+    public boolean isMemMigrate() {
         return getIntParameter(CPUSET_MEMORY_MIGRATE) > 0;
     }
 
-    public void setCpuExclusive(boolean flag) throws IOException {
+    public void setCpuExclusive(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(CPUSET_CPU_EXCLUSIVE, v);
     }
 
-    public boolean isCpuExclusive() throws IOException {
+    public boolean isCpuExclusive() {
         return getIntParameter(CPUSET_CPU_EXCLUSIVE) > 0;
     }
 
-    public void setMemExclusive(boolean flag) throws IOException {
+    public void setMemExclusive(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(CPUSET_MEM_EXCLUSIVE, v);
     }
 
-    public boolean isMemExclusive() throws IOException {
+    public boolean isMemExclusive() {
         return getIntParameter(CPUSET_MEM_EXCLUSIVE) > 0;
     }
 
-    public void setMemHardwall(boolean flag) throws IOException {
+    public void setMemHardwall(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(CPUSET_MEM_HARDWALL, v);
     }
 
-    public boolean isMemHardwall() throws IOException {
+    public boolean isMemHardwall() {
         return getIntParameter(CPUSET_MEM_HARDWALL) > 0;
     }
 
-    public int getMemPressure() throws IOException {
+    public int getMemPressure() {
         return getIntParameter(CPUSET_MEMORY_PRESSURE);
     }
 
-    public void setMemPressureEnabled(boolean flag) throws IOException {
+    public void setMemPressureEnabled(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(CPUSET_MEMORY_PRESSURE_ENABLED, v);
     }
 
-    public boolean isMemPressureEnabled() throws IOException {
+    public boolean isMemPressureEnabled() {
         return getIntParameter(CPUSET_MEMORY_PRESSURE_ENABLED) > 0;
     }
 
-    public void setMemSpreadPage(boolean flag) throws IOException {
+    public void setMemSpreadPage(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(CPUSET_MEMORY_SPREAD_PAGE, v);
     }
 
-    public boolean isMemSpreadPage() throws IOException {
+    public boolean isMemSpreadPage() {
         return getIntParameter(CPUSET_MEMORY_SPREAD_PAGE) > 0;
     }
 
-    public void setMemSpreadSlab(boolean flag) throws IOException {
+    public void setMemSpreadSlab(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(CPUSET_MEMORY_SPREAD_SLAB, v);
     }
 
-    public boolean isMemSpreadSlab() throws IOException {
+    public boolean isMemSpreadSlab() {
         return getIntParameter(CPUSET_MEMORY_SPREAD_SLAB) > 0;
     }
 
-    public void setSchedLoadBlance(boolean flag) throws IOException {
+    public void setSchedLoadBlance(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(CPUSET_SCHED_LOAD_BALANCE, v);
     }
 
-    public boolean isSchedLoadBlance() throws IOException {
+    public boolean isSchedLoadBlance() {
         return getIntParameter(CPUSET_SCHED_LOAD_BALANCE) > 0;
     }
 
-    public void setSchedRelaxDomainLevel(int v) throws IOException {
+    public void setSchedRelaxDomainLevel(int v) {
         setParameter(CPUSET_SCHED_RELAX_DOMAIN_LEVEL, v);
     }
 
-    public int getSchedRelaxDomainLevel() throws IOException {
+    public int getSchedRelaxDomainLevel() {
         return getIntParameter(CPUSET_SCHED_RELAX_DOMAIN_LEVEL);
     }
 

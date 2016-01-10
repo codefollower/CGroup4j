@@ -19,8 +19,6 @@ package org.lealone.cgroup.subsystem;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 public class DevicesTest extends SubSystemTest {
@@ -30,7 +28,7 @@ public class DevicesTest extends SubSystemTest {
     }
 
     @Test
-    public void run() throws IOException {
+    public void run() {
         Devices devices = g1.getDevices();
 
         Devices.Record record = new Devices.Record(Devices.TYPE_ALL, 8, 0, 2);

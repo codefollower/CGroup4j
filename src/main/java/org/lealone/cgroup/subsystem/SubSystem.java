@@ -17,7 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,16 +43,16 @@ public abstract class SubSystem {
 
     public abstract SubSystemType getType();
 
-    public void addCurrentTask() throws IOException {
+    public void addCurrentTask() {
         addTask(Threads.getThreadId());
     }
 
-    public void addTask(int task) throws IOException {
+    public void addTask(int task) {
         setParameter(TASKS, task);
         taskList.add(task);
     }
 
-    public void setEventControl(String eventFd, String controlFd, String... args) throws IOException {
+    public void setEventControl(String eventFd, String controlFd, String... args) {
         StringBuilder sb = new StringBuilder();
         sb.append(eventFd);
         sb.append(' ');
@@ -66,36 +65,36 @@ public abstract class SubSystem {
         setParameter(CGROUP_EVENT_CONTROL, sb);
     }
 
-    public void setNotifyOnRelease(boolean flag) throws IOException {
+    public void setNotifyOnRelease(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(NOTIFY_ON_RELEASE, v);
     }
 
-    public boolean isNotifyOnRelease() throws IOException {
+    public boolean isNotifyOnRelease() {
         return getIntParameter(NOTIFY_ON_RELEASE) > 0;
     }
 
-    public void setReleaseAgent(String cmd) throws IOException {
+    public void setReleaseAgent(String cmd) {
         setParameter(RELEASE_AGENT, cmd);
     }
 
-    public String getReleaseAgent() throws IOException {
+    public String getReleaseAgent() {
         return getStringParameter(RELEASE_AGENT);
     }
 
-    protected void setParameter(String parameterName, Object parameterValue) throws IOException {
+    protected void setParameter(String parameterName, Object parameterValue) {
         group.setParameter(parameterName, parameterValue);
     }
 
-    protected String getStringParameter(String parameterName) throws IOException {
+    protected String getStringParameter(String parameterName) {
         return group.getParameter(parameterName);
     }
 
-    protected long getLongParameter(String parameterName) throws IOException {
+    protected long getLongParameter(String parameterName) {
         return Long.parseLong(getStringParameter(parameterName));
     }
 
-    protected int getIntParameter(String parameterName) throws IOException {
+    protected int getIntParameter(String parameterName) {
         return Integer.parseInt(getStringParameter(parameterName));
     }
 

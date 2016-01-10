@@ -17,8 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
-
 import org.lealone.cgroup.Group;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,20 +127,20 @@ public class Devices extends SubSystem {
         }
     }
 
-    private void setPermission(String p, char type, int major, int minor, int accesses) throws IOException {
+    private void setPermission(String p, char type, int major, int minor, int accesses) {
         Record record = new Record(type, major, minor, accesses);
         setParameter(p, record);
     }
 
-    public void setAllow(char type, int major, int minor, int accesses) throws IOException {
+    public void setAllow(char type, int major, int minor, int accesses) {
         setPermission(DEVICES_ALLOW, type, major, minor, accesses);
     }
 
-    public void setDeny(char type, int major, int minor, int accesses) throws IOException {
+    public void setDeny(char type, int major, int minor, int accesses) {
         setPermission(DEVICES_DENY, type, major, minor, accesses);
     }
 
-    public Record[] getList() throws IOException {
+    public Record[] getList() {
         String output = getStringParameter(DEVICES_LIST);
         return Record.parseRecordList(output);
     }

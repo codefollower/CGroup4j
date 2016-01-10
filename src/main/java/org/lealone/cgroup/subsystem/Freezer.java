@@ -17,8 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
-
 import org.lealone.cgroup.Group;
 
 public class Freezer extends SubSystem {
@@ -38,11 +36,11 @@ public class Freezer extends SubSystem {
         return SubSystemType.freezer;
     }
 
-    public void setState(String state) throws IOException {
+    public void setState(String state) {
         setParameter(FREEZER_STATE, state);
     }
 
-    public String getState() throws IOException {
+    public String getState() {
         return getStringParameter(FREEZER_STATE);
     }
 

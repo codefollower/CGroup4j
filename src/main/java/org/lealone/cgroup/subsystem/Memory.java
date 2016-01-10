@@ -17,8 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
-
 import org.lealone.cgroup.Group;
 
 public class Memory extends SubSystem {
@@ -105,79 +103,79 @@ public class Memory extends SubSystem {
         }
     }
 
-    public Stat getStat() throws IOException {
+    public Stat getStat() {
         String output = getStringParameter(MEMORY_STAT);
         Stat stat = new Stat(output);
         return stat;
     }
 
-    public long getPhysicalUsage() throws IOException {
+    public long getPhysicalUsage() {
         return getLongParameter(MEMORY_USAGE_IN_BYTES);
     }
 
-    public long getWithSwapUsage() throws IOException {
+    public long getWithSwapUsage() {
         return getLongParameter(MEMORY_MEMSW_USAGE_IN_BYTES);
     }
 
-    public long getMaxPhysicalUsage() throws IOException {
+    public long getMaxPhysicalUsage() {
         return getLongParameter(MEMORY_MAX_USAGE_IN_BYTES);
     }
 
-    public long getMaxWithSwapUsage() throws IOException {
+    public long getMaxWithSwapUsage() {
         return getLongParameter(MEMORY_MEMSW_MAX_USAGE_IN_BYTES);
     }
 
-    public void setPhysicalUsageLimit(long v) throws IOException {
+    public void setPhysicalUsageLimit(long v) {
         setParameter(MEMORY_LIMIT_IN_BYTES, v);
     }
 
-    public long getPhysicalUsageLimit() throws IOException {
+    public long getPhysicalUsageLimit() {
         return getLongParameter(MEMORY_LIMIT_IN_BYTES);
     }
 
-    public void setWithSwapUsageLimit(long v) throws IOException {
+    public void setWithSwapUsageLimit(long v) {
         setParameter(MEMORY_MEMSW_LIMIT_IN_BYTES, v);
     }
 
-    public long getWithSwapUsageLimit() throws IOException {
+    public long getWithSwapUsageLimit() {
         return getLongParameter(MEMORY_MEMSW_LIMIT_IN_BYTES);
     }
 
-    public int getPhysicalFailCount() throws IOException {
+    public int getPhysicalFailCount() {
         return getIntParameter(MEMORY_FAILCNT);
     }
 
-    public int getWithSwapFailCount() throws IOException {
+    public int getWithSwapFailCount() {
         return getIntParameter(MEMORY_MEMSW_FAILCNT);
     }
 
-    public void clearForceEmpty() throws IOException {
+    public void clearForceEmpty() {
         setParameter(MEMORY_FORCE_EMPTY, 0);
     }
 
-    public void setSwappiness(int v) throws IOException {
+    public void setSwappiness(int v) {
         setParameter(MEMORY_SWAPPINESS, v);
     }
 
-    public int getSwappiness() throws IOException {
+    public int getSwappiness() {
         return getIntParameter(MEMORY_SWAPPINESS);
     }
 
-    public void setUseHierarchy(boolean flag) throws IOException {
+    public void setUseHierarchy(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(MEMORY_USE_HIERARCHY, v);
     }
 
-    public boolean isUseHierarchy() throws IOException {
+    public boolean isUseHierarchy() {
         return getIntParameter(MEMORY_USE_HIERARCHY) > 0;
     }
 
-    public void setOomControl(boolean flag) throws IOException {
+    public void setOomControl(boolean flag) {
         int v = flag ? 1 : 0;
         setParameter(MEMORY_OOM_CONTROL, v);
     }
 
-    public boolean isOomControl() throws IOException {
+    public boolean isOomControl() {
         String output = getStringParameter(MEMORY_OOM_CONTROL);
         output = output.split("\n")[0].split("[\\s]")[1];
         int value = Integer.parseInt(output);

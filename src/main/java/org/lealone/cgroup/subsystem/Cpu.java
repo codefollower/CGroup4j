@@ -17,8 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
-
 import org.lealone.cgroup.Group;
 
 public class Cpu extends SubSystem {
@@ -53,49 +51,49 @@ public class Cpu extends SubSystem {
         }
     }
 
-    public Stat getStat() throws IOException {
+    public Stat getStat() {
         String output = getStringParameter(CPU_STAT);
         Stat stat = new Stat(output);
         return stat;
     }
 
-    public void setShares(int shares) throws IOException {
+    public void setShares(int shares) {
         setParameter(CPU_SHARES, shares);
     }
 
-    public int getShares() throws IOException {
+    public int getShares() {
         return getIntParameter(CPU_SHARES);
     }
 
-    public void setCfsPeriodUs(long v) throws IOException {
+    public void setCfsPeriodUs(long v) {
         setParameter(CPU_CFS_PERIOD_US, v);
     }
 
-    public long getCfsPeriodUs() throws IOException {
+    public long getCfsPeriodUs() {
         return getLongParameter(CPU_CFS_PERIOD_US);
     }
 
-    public void setCfsQuotaUs(long v) throws IOException {
+    public void setCfsQuotaUs(long v) {
         setParameter(CPU_CFS_QUOTA_US, v);
     }
 
-    public long getCfsQuotaUs() throws IOException {
+    public long getCfsQuotaUs() {
         return getLongParameter(CPU_CFS_QUOTA_US);
     }
 
-    public void setRtPeriodUs(long v) throws IOException {
+    public void setRtPeriodUs(long v) {
         setParameter(CPU_RT_PERIOD_US, v);
     }
 
-    public long getRtPeriodUs() throws IOException {
+    public long getRtPeriodUs() {
         return getLongParameter(CPU_RT_PERIOD_US);
     }
 
-    public void setRtRuntimeUs(long v) throws IOException {
+    public void setRtRuntimeUs(long v) {
         setParameter(CPU_RT_RUNTIME_US, v);
     }
 
-    public long getRtRuntimeUs() throws IOException {
+    public long getRtRuntimeUs() {
         return getLongParameter(CPU_RT_RUNTIME_US);
     }
 

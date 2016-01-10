@@ -19,8 +19,6 @@ package org.lealone.cgroup.subsystem;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 public class NetClsTest extends SubSystemTest {
@@ -30,7 +28,7 @@ public class NetClsTest extends SubSystemTest {
     }
 
     @Test
-    public void run() throws IOException {
+    public void run() {
         NetCls netCls = g1.getNetCls();
         int[] excepted = { 10, 1 };
         netCls.setClassId(excepted[0], excepted[1]);

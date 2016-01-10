@@ -20,7 +20,6 @@ package org.lealone.cgroup.subsystem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.junit.Test;
@@ -32,7 +31,7 @@ public class NetPrioTest extends SubSystemTest {
     }
 
     @Test
-    public void run() throws IOException {
+    public void run() {
         NetPrio netPrio = g1.getNetPrio();
         assertNotNull(netPrio.getPrioId());
         netPrio.addIfPrioMap("eth0", 2);

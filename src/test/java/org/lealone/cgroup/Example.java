@@ -17,8 +17,6 @@
  */
 package org.lealone.cgroup;
 
-import java.io.IOException;
-
 import org.lealone.cgroup.subsystem.SubSystemType;
 
 public class Example {
@@ -27,7 +25,7 @@ public class Example {
     private static Group g1;
     private static Group g2;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try {
             // 把cpu和cpuset两个子系统挂载到/cgroup/example
             root = Group.createRootGroup("example", SubSystemType.cpu, SubSystemType.cpuset);
@@ -43,7 +41,7 @@ public class Example {
         }
     }
 
-    private static void run() throws IOException {
+    private static void run() {
         g1.getCpuset().setCpus(0);
         g2.getCpuset().setCpus(0);
 
@@ -88,13 +86,10 @@ public class Example {
         public void run() {
             int id = Threads.getThreadId();
             System.out.println("Thread id:" + id);
-            try {
-                g.getCpu().addTask(id);
-                while (!end)
-                    ;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            g.getCpu().addTask(id);
+
+            while (!end)
+                ;
         }
     }
 

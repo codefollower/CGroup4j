@@ -17,8 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
-
 import org.lealone.cgroup.Group;
 
 public class Cpuacct extends SubSystem {
@@ -47,21 +45,21 @@ public class Cpuacct extends SubSystem {
         }
     }
 
-    public Stat getStat() throws IOException {
+    public Stat getStat() {
         String output = getStringParameter(CPUACCT_STAT);
         Stat stat = new Stat(output);
         return stat;
     }
 
-    public long getUsage() throws IOException {
+    public long getUsage() {
         return getLongParameter(CPUACCT_USAGE);
     }
 
-    public void resetUsage() throws IOException {
+    public void resetUsage() {
         setParameter(CPUACCT_USAGE, 0);
     }
 
-    public long[] getUsagePerCpu() throws IOException {
+    public long[] getUsagePerCpu() {
         String[] outputs = getStringParameter(CPUACCT_USAGE_PERCPU).split(" ");
         long[] usages = new long[outputs.length];
         for (int i = 0, l = outputs.length; i < l; i++) {

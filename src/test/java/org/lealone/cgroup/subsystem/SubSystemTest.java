@@ -20,8 +20,6 @@ package org.lealone.cgroup.subsystem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,13 +42,9 @@ public class SubSystemTest {
 
     protected SubSystemTest(SubSystemType type) {
         log = LoggerFactory.getLogger(this.getClass());
-        try {
-            root = Group.createRootGroup(type.name(), type);
-            g1 = root.createSubGroup("g1");
-        } catch (IOException e) {
-            log.error("Create cgroup Failed.", e);
-            assertTrue(false);
-        }
+
+        root = Group.createRootGroup(type.name(), type);
+        g1 = root.createSubGroup("g1");
 
         instance.set(this);
     }
@@ -64,11 +58,7 @@ public class SubSystemTest {
         SubSystemTest test = instance.get();
         instance.remove();
         if (test != null) {
-            try {
-                test.root.umount();
-            } catch (IOException e) {
-                test.log.error("Umount cgroup failed.", e);
-            }
+            test.root.umount();
         }
     }
 
@@ -82,13 +72,8 @@ public class SubSystemTest {
 
     // @Test
     public void testAddTask() {
-        try {
-            int tid = Threads.getThreadId();
-            g1.getCpu().addTask(tid);
-        } catch (IOException e) {
-            log.error("Add task failed.", e);
-            assertTrue(false);
-        }
+        int tid = Threads.getThreadId();
+        g1.getCpu().addTask(tid);
     }
 
     // FIXME
@@ -99,27 +84,17 @@ public class SubSystemTest {
     // FIXME
     // @Test
     public void testSetNotifyOnRelease() {
-        try {
-            g1.getCpu().setNotifyOnRelease(true);
-            assertTrue(g1.getCpu().isNotifyOnRelease());
-        } catch (IOException e) {
-            log.error("Set notify_on_release failed.", e);
-            assertTrue(false);
-        }
+        g1.getCpu().setNotifyOnRelease(true);
+        assertTrue(g1.getCpu().isNotifyOnRelease());
     }
 
     // FIXME
     // @Test
     public void testSetReleaseAgent() {
-        try {
-            String excepted = "echo 0";
-            g1.getCpu().setReleaseAgent(excepted);
-            String actual = g1.getCpu().getReleaseAgent();
-            assertEquals(actual, excepted);
-        } catch (IOException e) {
-            log.error("Set release_agent failed.", e);
-            assertTrue(false);
-        }
+        String excepted = "echo 0";
+        g1.getCpu().setReleaseAgent(excepted);
+        String actual = g1.getCpu().getReleaseAgent();
+        assertEquals(actual, excepted);
     }
 
 }

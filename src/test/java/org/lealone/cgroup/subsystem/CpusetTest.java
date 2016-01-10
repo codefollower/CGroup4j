@@ -21,8 +21,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 public class CpusetTest extends SubSystemTest {
@@ -32,7 +30,7 @@ public class CpusetTest extends SubSystemTest {
     }
 
     @Test
-    public void run() throws IOException {
+    public void run() {
         Cpuset cpuset = g1.getCpuset();
 
         int[] excepted = { 0, 1 };

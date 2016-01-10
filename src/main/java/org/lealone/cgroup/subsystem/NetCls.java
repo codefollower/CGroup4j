@@ -17,8 +17,6 @@
  */
 package org.lealone.cgroup.subsystem;
 
-import java.io.IOException;
-
 import org.lealone.cgroup.Group;
 
 public class NetCls extends SubSystem {
@@ -48,14 +46,14 @@ public class NetCls extends SubSystem {
         return sb;
     }
 
-    public void setClassId(int major, int minor) throws IOException {
+    public void setClassId(int major, int minor) {
         StringBuilder sb = new StringBuilder("0x");
         sb.append(toHex(major));
         sb.append(toHex(minor));
         setParameter(NET_CLS_CLASSID, sb);
     }
 
-    public int[] getClassId() throws IOException {
+    public int[] getClassId() {
         String output = getStringParameter(NET_CLS_CLASSID);
         output = Integer.toHexString(Integer.parseInt(output));
         int major = Integer.parseInt(output.substring(0, output.length() - 4));

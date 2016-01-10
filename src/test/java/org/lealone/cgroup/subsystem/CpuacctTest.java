@@ -20,8 +20,6 @@ package org.lealone.cgroup.subsystem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 public class CpuacctTest extends SubSystemTest {
@@ -31,7 +29,7 @@ public class CpuacctTest extends SubSystemTest {
     }
 
     @Test
-    public void run() throws IOException {
+    public void run() {
         Cpuacct cpuacct = g1.getCpuacct();
         assertEquals(0, cpuacct.getUsage());
 
