@@ -29,125 +29,89 @@ public class BlkioTest extends SubSystemTest {
     }
 
     @Test
-    public void testSetReadBpsThrottle() {
+    public void run() {
+        testThrottle();
+        testWeight();
+        testCommonParameters();
+    }
+
+    private void testThrottle() {
+        Blkio blkio = g1.getBlkio();
+
         Blkio.Record excepted = new Blkio.Record(8, 0, null, 200);
-        g1.getBlkio().setReadBpsThrottle(excepted.major, excepted.minor, (int) excepted.value);
-        Blkio.Record actual = g1.getBlkio().getReadBpsThrottle()[0];
-        assertEquals(actual, excepted);
-    }
+        blkio.setThrottleReadBpsDevice(excepted.major, excepted.minor, excepted.value);
+        Blkio.Record actual = blkio.getThrottleReadBpsDevice()[0];
+        assertEquals(excepted, actual);
 
-    @Test
-    public void testSetWriteBpsThrottle() {
-        Blkio.Record excepted = new Blkio.Record(8, 0, null, 200);
-        g1.getBlkio().setWriteBpsThrottle(excepted.major, excepted.minor, (int) excepted.value);
-        Blkio.Record actual = g1.getBlkio().getWriteBpsThrottle()[0];
-        assertEquals(actual, excepted);
-    }
+        blkio.setThrottleReadIopsDevice(excepted.major, excepted.minor, excepted.value);
+        actual = blkio.getThrottleReadIopsDevice()[0];
+        assertEquals(excepted, actual);
 
-    @Test
-    public void testSetReadIopsThrottle() {
-        Blkio.Record excepted = new Blkio.Record(8, 0, null, 200);
-        g1.getBlkio().setReadIopsThrottle(excepted.major, excepted.minor, (int) excepted.value);
-        Blkio.Record actual = g1.getBlkio().getReadIopsThrottle()[0];
-        assertEquals(actual, excepted);
-    }
+        blkio.setThrottleWriteBpsDevice(excepted.major, excepted.minor, excepted.value);
+        actual = blkio.getThrottleWriteBpsDevice()[0];
+        assertEquals(excepted, actual);
 
-    @Test
-    public void testSetWriteIopsThrottle() {
-        Blkio.Record excepted = new Blkio.Record(8, 0, null, 200);
-        g1.getBlkio().setWriteIopsThrottle(excepted.major, excepted.minor, (int) excepted.value);
-        Blkio.Record actual = g1.getBlkio().getWriteIopsThrottle()[0];
-        assertEquals(actual, excepted);
-    }
+        blkio.setThrottleWriteIopsDevice(excepted.major, excepted.minor, excepted.value);
+        actual = blkio.getThrottleWriteIopsDevice()[0];
+        assertEquals(excepted, actual);
 
-    @Test
-    public void testGetIoServiceCountThrottle() {
-        Blkio.Record[] records = root.getBlkio().getIoServiceCountThrottle();
+        Blkio.Record[] records = root.getBlkio().getThrottleIoServiced();
+        assertTrue(records.length > 0);
+
+        records = root.getBlkio().getThrottleIoServiceBytes();
         assertTrue(records.length > 0);
     }
 
-    @Test
-    public void testGetIoServiceBytesThrottle() {
-        Blkio.Record[] records = root.getBlkio().getIoServiceBytesThrottle();
-        assertTrue(records.length > 0);
+    private void testWeight() {
+        Blkio blkio = g1.getBlkio();
+        blkio.setWeight(500);
+        assertEquals(500, blkio.getWeight());
+
+        // TODO
+        // blkio.setWeightDevice(8, 0, 500);
+        // assertEquals("8:0 500", blkio.getWeightDevice());
     }
 
-    @Test
-    public void testResetStats() {
-        root.getBlkio().resetStats(0);
-    }
+    private void testCommonParameters() {
+        Blkio blkio = root.getBlkio();
 
-    @Test
-    public void testGetIoTime() {
-        Blkio.Record[] records = root.getBlkio().getIoTime();
-        assertTrue(records.length > 0);
-    }
+        Blkio.Record[] records = blkio.getIoServiced();
+        assertTrue(records.length == 0);
 
-    @Test
-    public void testGetSectors() {
-        Blkio.Record[] records = root.getBlkio().getSectors();
-        assertTrue(records.length > 0);
+        records = blkio.getIoServiceBytes();
+        assertTrue(records.length == 0);
+
+        records = blkio.getIoServiceTime();
+        assertTrue(records.length == 0);
+
+        records = blkio.getIoWaitTime();
+        assertTrue(records.length == 0);
+
+        records = blkio.getIoMerged();
+        assertTrue(records.length == 0);
+
+        records = blkio.getIoQueued();
+        assertTrue(records.length == 0);
+
+        blkio.resetStats(0);
+
+        records = blkio.getIoTime();
+        assertTrue(records.length == 0);
+
+        records = blkio.getSectors();
+        assertTrue(records.length == 0);
+
     }
 
     // TODO
     // @Test
-    public void testGetAvgQueueSize() {
-    }
-
-    // TODO
-    // @Test
-    public void testGetGroupWaitTime() {
-    }
-
-    // TODO
-    // @Test
-    public void testGetEmptyTime() {
-    }
-
-    // TODO
-    // @Test
-    public void testGetIdleTime() {
-    }
-
-    // TODO
-    // @Test
-    public void testGetDequeueCount() {
-    }
-
-    @Test
-    public void testGetIoServiceCount() {
-        Blkio.Record[] records = root.getBlkio().getIoServiceCount();
-        assertTrue(records.length > 0);
-    }
-
-    @Test
-    public void testGetIoServiceBytes() {
-        Blkio.Record[] records = root.getBlkio().getIoServiceBytes();
-        assertTrue(records.length > 0);
-    }
-
-    @Test
-    public void testGetIoServiceTime() {
-        Blkio.Record[] records = root.getBlkio().getIoServiceTime();
-        assertTrue(records.length > 0);
-    }
-
-    @Test
-    public void testGetIoWaitTime() {
-        Blkio.Record[] records = root.getBlkio().getIoWaitTime();
-        assertTrue(records.length > 0);
-    }
-
-    @Test
-    public void testGetIoMergeCount() {
-        Blkio.Record[] records = root.getBlkio().getIoMergeCount();
-        assertTrue(records.length > 0);
-    }
-
-    @Test
-    public void testGetIoQueueCount() {
-        Blkio.Record[] records = root.getBlkio().getIoQueueCount();
-        assertTrue(records.length > 0);
+    public void testDebugParameters() {
+        Blkio blkio = g1.getBlkio();
+        blkio.getAvgQueueSize();
+        blkio.getGroupWaitTime();
+        blkio.getEmptyTime();
+        blkio.getIdleTime();
+        blkio.getDequeue();
     }
 
 }

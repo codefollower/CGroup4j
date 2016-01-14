@@ -60,20 +60,11 @@ public class Blkio extends SubSystem {
         return SubSystemType.blkio;
     }
 
-    private void setThrottle(String prop, int major, int minor, int speed) {
-        Record record = new Record(major, minor, null, speed);
-        setParameter(prop, record);
-    }
-
-    private Record[] getThrottle(String prop) {
-        return parseRecordList(prop);
-    }
-
     public static class Record {
-        int major;
-        int minor;
-        String operation;
-        long value;
+        public final int major;
+        public final int minor;
+        public final String operation;
+        public final long value;
 
         public Record(int major, int minor, String operation, long value) {
             this.major = major;
@@ -84,17 +75,28 @@ public class Blkio extends SubSystem {
 
         public Record(String output) {
             String[] splits = output.split("[:\\s]");
-            major = Integer.parseInt(splits[0]);
-            minor = Integer.parseInt(splits[1]);
-            if (splits.length > 3) {
-                operation = splits[2];
-                value = Long.parseLong(splits[3]);
+            if (splits.length == 2) { // blkio.io_merged or blkio.io_queued
+                major = -1;
+                minor = -1;
+                operation = splits[1];
+                value = Long.parseLong(splits[0]);
             } else {
-                value = Long.parseLong(splits[2]);
+                major = Integer.parseInt(splits[0]);
+                minor = Integer.parseInt(splits[1]);
+                if (splits.length > 3) {
+                    operation = splits[2];
+                    value = Long.parseLong(splits[3]);
+                } else {
+                    operation = null;
+                    value = Long.parseLong(splits[2]);
+                }
             }
         }
 
         private static Record[] parseRecordList(String output) {
+            output = output.trim();
+            if (output.isEmpty())
+                return new Record[0];
             String[] splits = output.split("\n");
             // Skip Last Total Item.
             int len = splits.length;
@@ -124,45 +126,94 @@ public class Blkio extends SubSystem {
 
             return sb.toString();
         }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + major;
+            result = prime * result + minor;
+            result = prime * result + ((operation == null) ? 0 : operation.hashCode());
+            result = prime * result + (int) (value ^ (value >>> 32));
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            Record other = (Record) obj;
+            if (major != other.major)
+                return false;
+            if (minor != other.minor)
+                return false;
+            if (operation == null) {
+                if (other.operation != null)
+                    return false;
+            } else if (!operation.equals(other.operation))
+                return false;
+            if (value != other.value)
+                return false;
+            return true;
+        }
+
     }
 
-    public void setReadBpsThrottle(int major, int minor, int speed) {
-        setThrottle(BLKIO_THROTTLE_READ_BPS_DEVICE, major, minor, speed);
+    private void setThrottle(String p, int major, int minor, long v) {
+        Record record = new Record(major, minor, null, v);
+        setParameter(p, record);
     }
 
-    public Record[] getReadBpsThrottle() {
+    private Record[] getThrottle(String p) {
+        return parseRecordList(p);
+    }
+
+    private Record[] parseRecordList(String p) {
+        String output = getStringParameter(p);
+        return Record.parseRecordList(output);
+    }
+
+    public void setThrottleReadBpsDevice(int major, int minor, long bps) {
+        setThrottle(BLKIO_THROTTLE_READ_BPS_DEVICE, major, minor, bps);
+    }
+
+    public Record[] getThrottleReadBpsDevice() {
         return getThrottle(BLKIO_THROTTLE_READ_BPS_DEVICE);
     }
 
-    public void setWriteBpsThrottle(int major, int minor, int speed) {
-        setThrottle(BLKIO_THROTTLE_WRITE_BPS_DEVICE, major, minor, speed);
+    public void setThrottleReadIopsDevice(int major, int minor, long iops) {
+        setThrottle(BLKIO_THROTTLE_READ_IOPS_DEVICE, major, minor, iops);
     }
 
-    public Record[] getWriteBpsThrottle() {
-        return getThrottle(BLKIO_THROTTLE_WRITE_BPS_DEVICE);
-    }
-
-    public void setReadIopsThrottle(int major, int minor, int speed) {
-        setThrottle(BLKIO_THROTTLE_READ_IOPS_DEVICE, major, minor, speed);
-    }
-
-    public Record[] getReadIopsThrottle() {
+    public Record[] getThrottleReadIopsDevice() {
         return getThrottle(BLKIO_THROTTLE_READ_IOPS_DEVICE);
     }
 
-    public void setWriteIopsThrottle(int major, int minor, int speed) {
-        setThrottle(BLKIO_THROTTLE_WRITE_IOPS_DEVICE, major, minor, speed);
+    public void setThrottleWriteBpsDevice(int major, int minor, long bps) {
+        setThrottle(BLKIO_THROTTLE_WRITE_BPS_DEVICE, major, minor, bps);
     }
 
-    public Record[] getWriteIopsThrottle() {
+    public Record[] getThrottleWriteBpsDevice() {
+        return getThrottle(BLKIO_THROTTLE_WRITE_BPS_DEVICE);
+    }
+
+    public void setThrottleWriteIopsDevice(int major, int minor, long iops) {
+        setThrottle(BLKIO_THROTTLE_WRITE_IOPS_DEVICE, major, minor, iops);
+    }
+
+    public Record[] getThrottleWriteIopsDevice() {
         return getThrottle(BLKIO_THROTTLE_WRITE_IOPS_DEVICE);
     }
 
-    public Record[] getIoServiceCountThrottle() {
+    public Record[] getThrottleIoServiced() {
         return getThrottle(BLKIO_THROTTLE_IO_SERIVICED);
     }
 
-    public Record[] getIoServiceBytesThrottle() {
+    public Record[] getThrottleIoServiceBytes() {
         return getThrottle(BLKIO_THROTTLE_IO_SERIVICE_BYTES);
     }
 
@@ -182,6 +233,30 @@ public class Blkio extends SubSystem {
 
     public String getWeightDevice() {
         return getStringParameter(BLKIO_WEIGHT_DEVICE);
+    }
+
+    public Record[] getIoServiced() {
+        return parseRecordList(BLKIO_IO_SERIVICED);
+    }
+
+    public Record[] getIoServiceBytes() {
+        return parseRecordList(BLKIO_IO_SERIVICE_BYTES);
+    }
+
+    public Record[] getIoServiceTime() {
+        return parseRecordList(BLKIO_IO_SERIVICE_TIME);
+    }
+
+    public Record[] getIoWaitTime() {
+        return parseRecordList(BLKIO_IO_WAIT_TIME);
+    }
+
+    public Record[] getIoMerged() {
+        return parseRecordList(BLKIO_IO_MERGED);
+    }
+
+    public Record[] getIoQueued() {
+        return parseRecordList(BLKIO_IO_QUEUED);
     }
 
     public void resetStats(int v) {
@@ -212,38 +287,8 @@ public class Blkio extends SubSystem {
         return getLongParameter(BLKIO_IDLE_TIME);
     }
 
-    public Record getDequeueCount() {
-        String output = getStringParameter(BLKIO_DEQUEUE);
-        return new Record(output);
-    }
-
-    public Record[] getIoServiceCount() {
-        return parseRecordList(BLKIO_IO_SERIVICED);
-    }
-
-    public Record[] getIoServiceBytes() {
-        return parseRecordList(BLKIO_IO_SERIVICE_BYTES);
-    }
-
-    public Record[] getIoServiceTime() {
-        return parseRecordList(BLKIO_IO_SERIVICE_TIME);
-    }
-
-    public Record[] getIoWaitTime() {
-        return parseRecordList(BLKIO_IO_WAIT_TIME);
-    }
-
-    public Record[] getIoMergeCount() {
-        return parseRecordList(BLKIO_IO_MERGED);
-    }
-
-    public Record[] getIoQueueCount() {
-        return parseRecordList(BLKIO_IO_QUEUED);
-    }
-
-    private Record[] parseRecordList(String p) {
-        String output = getStringParameter(p);
-        return Record.parseRecordList(output);
+    public Record[] getDequeue() {
+        return parseRecordList(BLKIO_DEQUEUE);
     }
 
 }
