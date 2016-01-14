@@ -19,6 +19,7 @@ package org.lealone.cgroup.subsystem;
 
 import org.lealone.cgroup.Group;
 
+// https://www.kernel.org/doc/Documentation/cgroups/memory.txt
 public class Memory extends SubSystem {
 
     private static final String MEMORY_STAT = "memory.stat";
@@ -30,8 +31,10 @@ public class Memory extends SubSystem {
     private static final String MEMORY_MEMSW_LIMIT_IN_BYTES = "memory.memsw.limit_in_bytes";
     private static final String MEMORY_FAILCNT = "memory.failcnt";
     private static final String MEMORY_MEMSW_FAILCNT = "memory.memsw.failcnt";
+    private static final String MEMORY_SOFT_LIMIT_IN_BYTES = "memory.soft_limit_in_bytes";
     private static final String MEMORY_FORCE_EMPTY = "memory.force_empty";
     private static final String MEMORY_SWAPPINESS = "memory.swappiness";
+    private static final String MEMORY_MOVE_CHARGE_AT_IMMIGRATE = "memory.move_charge_at_immigrate";
     private static final String MEMORY_USE_HIERARCHY = "memory.use_hierarchy";
     private static final String MEMORY_OOM_CONTROL = "memory.oom_control";
 
@@ -109,47 +112,55 @@ public class Memory extends SubSystem {
         return stat;
     }
 
-    public long getPhysicalUsage() {
+    public long getUsageInBytes() {
         return getLongParameter(MEMORY_USAGE_IN_BYTES);
     }
 
-    public long getWithSwapUsage() {
+    public long getMemswUsageInBytes() {
         return getLongParameter(MEMORY_MEMSW_USAGE_IN_BYTES);
     }
 
-    public long getMaxPhysicalUsage() {
+    public long getMaxUsageInBytes() {
         return getLongParameter(MEMORY_MAX_USAGE_IN_BYTES);
     }
 
-    public long getMaxWithSwapUsage() {
+    public long getMemswMaxUsageInBytes() {
         return getLongParameter(MEMORY_MEMSW_MAX_USAGE_IN_BYTES);
     }
 
-    public void setPhysicalUsageLimit(long v) {
+    public void setLimitInBytes(long v) {
         setParameter(MEMORY_LIMIT_IN_BYTES, v);
     }
 
-    public long getPhysicalUsageLimit() {
+    public long getLimitInBytes() {
         return getLongParameter(MEMORY_LIMIT_IN_BYTES);
     }
 
-    public void setWithSwapUsageLimit(long v) {
+    public void setMemswLimitInBytes(long v) {
         setParameter(MEMORY_MEMSW_LIMIT_IN_BYTES, v);
     }
 
-    public long getWithSwapUsageLimit() {
+    public long getMemswLimitInBytes() {
         return getLongParameter(MEMORY_MEMSW_LIMIT_IN_BYTES);
     }
 
-    public int getPhysicalFailCount() {
+    public int getFailcnt() {
         return getIntParameter(MEMORY_FAILCNT);
     }
 
-    public int getWithSwapFailCount() {
+    public int getMemswFailcnt() {
         return getIntParameter(MEMORY_MEMSW_FAILCNT);
     }
 
-    public void clearForceEmpty() {
+    public void setSoftLimitInBytes(long v) {
+        setParameter(MEMORY_SOFT_LIMIT_IN_BYTES, v);
+    }
+
+    public long getSoftLimitInBytes() {
+        return getLongParameter(MEMORY_SOFT_LIMIT_IN_BYTES);
+    }
+
+    public void forceEmpty() {
         setParameter(MEMORY_FORCE_EMPTY, 0);
     }
 
@@ -159,6 +170,14 @@ public class Memory extends SubSystem {
 
     public int getSwappiness() {
         return getIntParameter(MEMORY_SWAPPINESS);
+    }
+
+    public void setMoveChargeAtImmigrate(int v) {
+        setParameter(MEMORY_MOVE_CHARGE_AT_IMMIGRATE, v);
+    }
+
+    public boolean isMoveChargeAtImmigrate() {
+        return getIntParameter(MEMORY_MOVE_CHARGE_AT_IMMIGRATE) > 0;
     }
 
     public void setUseHierarchy(boolean flag) {

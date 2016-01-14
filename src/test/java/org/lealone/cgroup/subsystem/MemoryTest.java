@@ -33,13 +33,13 @@ public class MemoryTest extends SubSystemTest {
         Memory memory = g1.getMemory();
 
         long excepted = 200704l;
-        memory.setPhysicalUsageLimit(excepted);
-        long actual = memory.getPhysicalUsageLimit();
+        memory.setLimitInBytes(excepted);
+        long actual = memory.getLimitInBytes();
         assertEquals(excepted, actual);
 
         // excepted = 2 * 1024;
-        // memory.setWithSwapUsageLimit(excepted);
-        // actual = memory.getWithSwapUsageLimit();
+        // memory.setMemswLimitInBytes(excepted);
+        // actual = memory.getMemswLimitInBytes();
         // assertEquals(excepted, actual);
 
         excepted = 60;
