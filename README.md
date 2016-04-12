@@ -1,6 +1,6 @@
 # CGroup4j
 
-[Linux CGroups](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt) For Java
+[Linux CGroups](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt) For Java，改编自[jcgroup](https://github.com/haosdent/jcgroup)
 
 ## SubSystems
 
